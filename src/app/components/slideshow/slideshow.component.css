@@ -1,0 +1,218 @@
+button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  white-space: nowrap;
+  outline: none;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+}
+
+.offset-container {
+  position: relative;
+  /* max-width: 1000px;
+  height: 550px; */
+  margin: auto;
+  user-select: none;
+}
+
+.main-container {
+  position: relative;
+  width: auto;
+  height: inherit;
+  overflow: hidden !important;
+}
+
+.slides-strip {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: inherit;
+  width: auto;
+  background-color: #333;
+  transition: transform 0.7s ease;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.slide-indicator {
+  display: block;
+  position: relative;
+  color: rgba(255, 255, 255, 0.8);
+  width: 100px;
+  padding: 0.7rem 1rem;
+}
+
+.slide {
+  position: relative;
+  flex-shrink: 0;
+  width: auto;
+  height: inherit; 
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  padding: 1.5rem 1rem 0;
+  background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+}
+
+.controls-autohide {
+  transform: translateY(100%);
+}
+
+.controls button {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+  color: #fff;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.4s ease;
+}
+
+.controls button:not(:last-of-type) {
+  margin-right: 0.5rem;
+}
+
+.controls button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.active-btn {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  transition: background-color 0.4s ease;
+}
+
+
+/**** Different Control Styles ****/
+
+.round-controls button {
+  width: 12px;  
+  height: 12px;
+  border-radius: 50%;
+}
+
+.slim-controls button {
+  width: 20px;
+  height: 5px;
+  border-radius: 5px;
+}
+
+.square-controls button {
+  width: 12px;
+  height: 12px;
+}
+
+
+
+/***** Fade Transition *****/
+@keyframes fadeIn {
+  from { visibility: hidden; opacity: 0; }
+  to   { visibility: visible; opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { visibility: visible; opacity: 1; }
+  to   { visibility: hidden; opacity: 0; }
+}
+
+.strip-fade {
+  display: block;
+  width: 100%;
+}
+
+.slide-fade {
+  position: absolute;
+}
+
+.slide-fade:not(:first-of-type) {
+  visibility: hidden;
+}
+
+.active-slide {
+  animation: fadeIn 2s ease forwards;
+}
+
+
+
+/***** Cards Transition *****/
+@keyframes slideInRight {
+  from { 
+    box-shadow: none;    
+    transform: scale(0.8, 0.8) translateX(100%);
+  }
+  to {
+    box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.5);     
+    transform: scale(1, 1) translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from { 
+    box-shadow: none;
+    transform: scale(0.8, 0.8) translateX(-100%);
+  }
+  to { 
+    box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.5);
+    transform: scale(1, 1) translateX(0);
+  }
+}
+
+.strip-cards {
+  display: block;
+  width: 100%;
+}
+
+.slide-cards {
+  position: absolute;
+}
+
+.slide-cards:not(:first-of-type) {
+  z-index: -1;
+}
+
+.active-next {
+  animation: slideInRight 0.4s ease forwards;
+}
+
+.active-before {
+  animation: slideInLeft 0.4s ease forwards;
+}

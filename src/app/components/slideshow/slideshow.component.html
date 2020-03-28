@@ -1,0 +1,76 @@
+<div 
+  #offsetContainer
+  *ngIf="slides?.length" 
+  class="offset-container">
+  <div 
+    (mouseover)="controlsVisibility(true)"
+    (mouseleave)="controlsVisibility(false)"
+    class="main-container">
+    <span 
+      *ngIf="showCounter"
+      class="slide-indicator">
+      {{ slidesCount }}
+    </span>
+    <div 
+      #slidesStrip
+      class="slides-strip"
+      [class]="{
+        'strip-fade': transition == 'fade',
+        'strip-cards': transition == 'cards'
+      }">
+      <div 
+        *ngFor="let slide of slides; index as index"
+        class="slide"
+        [class]="{
+          'slide-fade': transition == 'fade',
+          'slide-cards': transition == 'cards'
+        }">
+        <img [src]="slide">
+      </div>
+    </div>
+  
+    <div *ngIf="showControls">
+      <div 
+        *ngIf="controlsType !== 4"
+        #controls
+        class="controls"
+        [class]="controlsStyles"
+        [class.controls-autohide]="autohide">
+        <button 
+          *ngFor="let slide of slides; index as index"
+          (click)="switchSlide(index)"
+          [class.active-btn]="index == currentSlide">
+        </button>    
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="controlsType == 4" class="nav-btns-wrapper">
+    <div class="nav-btns">
+      <button 
+        [disabled]=""
+        (click)="navThumbnails('before')">
+        <i class="material-icons">keyboard_arrow_left</i>
+      </button>
+      <button 
+        (mousedown)="navThumbnails('next')">
+        <i class="material-icons">keyboard_arrow_right</i>
+      </button>
+    </div>
+
+    <div 
+      #controls
+      [class]="controlsStyles"
+      [class.controls-autohide]="autohide">
+      <div class="thumbnail-strip">
+        <button
+          #thumbnail 
+          *ngFor="let slide of slides; index as index"
+          (click)="switchSlide(index)"
+          [class.active-btn]="index == currentSlide">
+          <img [src]="slide" draggable="false">
+        </button>    
+      </div>
+    </div>
+  </div>
+</div>

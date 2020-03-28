@@ -1,0 +1,34 @@
+<app-slideshow 
+[slides]="slides"
+[width]="1000"
+[height]="550"
+[transition]="'cards'"
+[controls-type]="4"
+[autoplay]=""
+></app-slideshow>
+
+
+
+
+<!-- Accepted Inputs -->
+
+<!-- 
+  [slides] (string[]) accepts an array of images
+
+  [width] (number) sets the container width. Default value is 400(px)
+
+  [height] (number) sets the container height. Default value is 180(px)
+
+  [transition] (string) indicates de transition type {'strip', 'fade', 'cards'}. Default is 'strip'
+
+  [counter] (boolean) shows count and current position. Default is true
+
+  [controls] (boolean) shows navigation controls. Default is true
+
+  [controls-type] (number) set the controls style: round, slim, square. Default is 0
+
+  [controls-autohide] (boolean) enables controls autohide. Defualt is false
+
+  [autoplay] (boolean | { timeout: number }) autoplays the slideshow if set to true. Can use an object to spacify the slide change timeout
+
+-->
