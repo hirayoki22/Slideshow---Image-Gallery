@@ -1,13 +1,13 @@
-<app-slideshow 
+<slideshow 
 [slides]="slides"
-[width]="1000"
+[width]="900"
 [height]="550"
-[transition]="'cards'"
+[controls]=""
+[transition]=""
 [controls-type]="4"
+[controls-autohide]=""
 [autoplay]=""
-></app-slideshow>
-
-
+></slideshow>
 
 
 <!-- Accepted Inputs -->
@@ -21,13 +21,14 @@
 
   [transition] (string) indicates de transition type {'strip', 'fade', 'cards'}. Default is 'strip'
 
-  [counter] (boolean) shows count and current position. Default is true
+  [counter] (boolean) shows count and current slide position. Default is true
 
   [controls] (boolean) shows navigation controls. Default is true
 
   [controls-type] (number) set the controls style: round, slim, square. Default is 0
 
-  [controls-autohide] (boolean) enables controls autohide. Defualt is false
+  [controls-autohide] (boolean) enables controls autohide. Defualt is false;
+    Will not work in controls-type is set to 4
 
   [autoplay] (boolean | { timeout: number }) autoplays the slideshow if set to true. Can use an object to spacify the slide change timeout
 

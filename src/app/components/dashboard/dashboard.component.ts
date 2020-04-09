@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+
+import { SlideshowComponent } from '../slideshow/slideshow.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   slides: string[] = [];
 
   constructor() { }
 
   ngOnInit(): void {
     this.slides = this.getSlides();
+  }
+
+  ngAfterViewInit(): void {
+    
   }
 
   getSlides(): string[] {

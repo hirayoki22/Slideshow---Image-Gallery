@@ -1,20 +1,13 @@
-button {
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  white-space: nowrap;
-  outline: none;
-  cursor: pointer;
-  overflow: hidden;
-  user-select: none;
-}
-
 .offset-container {
   position: relative;
-  /* max-width: 1000px;
-  height: 550px; */
+  height: auto;
   margin: auto;
   user-select: none;
+
+}
+
+.alternate {
+  overflow: hidden;
 }
 
 .main-container {
@@ -24,32 +17,31 @@ button {
   overflow: hidden !important;
 }
 
+.slide-counter {
+  display: block;
+  position: absolute;
+  color: rgba(255, 255, 255, 0.8);
+  width: 100px;
+  padding: 0.7rem 1rem;
+  z-index: 2;
+}
+
 .slides-strip {
   display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: inherit;
-  width: auto;
+  display: -webkit-flex;
+  display: -moz-flex;
+  height: 100%;
+  width: fit-content;
   background-color: #333;
   transition: transform 0.7s ease;
   overflow: hidden;
   z-index: -1;
 }
 
-.slide-indicator {
-  display: block;
-  position: relative;
-  color: rgba(255, 255, 255, 0.8);
-  width: 100px;
-  padding: 0.7rem 1rem;
-}
-
 .slide {
-  position: relative;
   flex-shrink: 0;
   width: auto;
-  height: inherit; 
+  height: 100%; 
 }
 
 .slide img {
@@ -60,98 +52,10 @@ button {
 }
 
 
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-}
-
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-  padding: 1.5rem 1rem 0;
-  background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-}
-
-.controls-autohide {
-  transform: translateY(100%);
-}
-
-.controls button {
-  flex-shrink: 0;
-  margin-bottom: 1rem;
-  color: #fff;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: background-color 0.4s ease;
-}
-
-.controls button:not(:last-of-type) {
-  margin-right: 0.5rem;
-}
-
-.controls button:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-.active-btn {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  transition: background-color 0.4s ease;
-}
-
-
-/**** Different Control Styles ****/
-
-.round-controls button {
-  width: 12px;  
-  height: 12px;
-  border-radius: 50%;
-}
-
-.slim-controls button {
-  width: 20px;
-  height: 5px;
-  border-radius: 5px;
-}
-
-.square-controls button {
-  width: 12px;
-  height: 12px;
-}
-
-
-
 /***** Fade Transition *****/
-@keyframes fadeIn {
-  from { visibility: hidden; opacity: 0; }
-  to   { visibility: visible; opacity: 1; }
-}
-
 @keyframes fadeOut {
-  from { visibility: visible; opacity: 1; }
-  to   { visibility: hidden; opacity: 0; }
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 .strip-fade {
@@ -164,11 +68,36 @@ button {
 }
 
 .slide-fade:not(:first-of-type) {
-  visibility: hidden;
+  z-index: -1;
 }
 
 .active-slide {
-  animation: fadeIn 2s ease forwards;
+  animation: fadeOut 1s ease forwards;
+}
+
+
+
+/***** Blackout Transition *****/
+@keyframes blackout {
+  from { visibility: hidden; opacity: 0; }
+  to   { visibility: visible; opacity: 1; }
+}
+
+.strip-blackout {
+  display: block;
+  width: 100%;
+}
+
+.slide-blackout {
+  position: absolute;
+}
+
+.slide-blackout:not(:first-of-type) {
+  visibility: hidden;
+}
+
+.visible-slide {
+  animation: blackout 3s ease forwards;
 }
 
 

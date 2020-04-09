@@ -1,20 +1,19 @@
-import { Component, OnInit, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Input, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
 
+import { SlideshowService } from './services/slideshow.service';
+import { ControlsComponent } from './controls/controls.component';
 
 interface Playback {
   timeout?: number;
 }
 
 @Component({
-  selector: 'app-slideshow',
+  selector: 'slideshow',
   templateUrl: './slideshow.component.html',
-  styleUrls: [
-    './slideshow.component.css',
-    './alt-controls.component.css'
-  ]
+  styleUrls: ['./slideshow.component.css']
 })
-export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
+export class SlideshowComponent implements OnInit, AfterViewInit {
   @Input('slides') slides: string[] = [];
   @Input('width') width: number;
   @Input('height') height: number;
@@ -26,103 +25,64 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
   @Input('autoplay') autoplay: boolean | Playback;
   @ViewChild('offsetContainer') offsetContainer: ElementRef;
   @ViewChild('slidesStrip') slidesStrip: ElementRef;
-  @ViewChild('controls') controls: ElementRef;
-  @ViewChildren('thumbnail') _thumbnails: QueryList<ElementRef>;
+  @ViewChild(ControlsComponent) controlsComponent: ControlsComponent;
   private autoplayIndex: number = 0;
-  private controlsTimeout: any;
-  private thumbnails: HTMLElement[];
-  public currentSlide: number = 0;
+  currentSlide: number = 0;
 
-  constructor() { }
 
-  ngOnChanges() {
-  }
+  constructor(private slideshowService: SlideshowService) { }
+
 
   ngOnInit(): void {
-    this.loadDefaults();
+    this.slideshowService.loadSlides(this.slides);
   }
 
   ngAfterViewInit(): void {
-    this.setDimensions();
+    this.setDefaults();
+
+    this.slideshowService.currentSlide.subscribe(index => {
+      this.slideAnimation(index);
+    });
 
     if(this.autoplay) { this.playSlideshow(); }
 
-    if (this.controlsType == 4) {
-      this.thumbnails = this._thumbnails
-        .map(thumbnail => thumbnail.nativeElement);
+    if (this.showControls) {
+      setTimeout(() => {
+        this.controlsComponent.slides = this.slides;
+        this.controlsComponent.controlsType = this.controlsType;
+        this.controlsComponent.autohide = this.autohide;
+      });
     }
   }
 
-  navThumbnails(position: string): void {
-    const container: HTMLElement = 
-      this.thumbnails[0].parentElement.parentElement;
-
-    switch (position) {
-      case 'before':
-        container.scrollLeft -= 250;
-        break;
-
-      case 'next':
-        container.scrollLeft += 250;
-        break;
-    
-      default:
-        console.error('Invalid option ', position);
-        break;
-    }
-  }
-
-  get slidesCount() {
-    return `${this.currentSlide + 1}/${this.slides.length}`
-  }
-
-  get controlsStyles() {
-    return {
-      'round-controls':      this.controlsType == 1,
-      'slim-controls':       this.controlsType == 2,
-      'square-controls':     this.controlsType == 3,
-      'thumbnails-controls': this.controlsType == 4
-    }
-  }
-
-  private loadDefaults() {
+  private setDefaults() {
     const limit = 25;
 
     this.slides = this.slides.length > limit ? 
       this.slides.slice(0, limit) : this.slides;
       
-    this.width  = this.width  < 200 || !this.width ? 200 : this.width;
-    this.height = this.height < 200 || !this.height ? 200 : this.height;
-  }
-
-  controlsVisibility(visible:boolean): void {
-    if(!this.autohide) { return; }
-
-    const controls = <HTMLElement>this.controls.nativeElement;
-
-    if(visible) {
-      controls.style.animation = 'slideUp 0.3s ease forwards';
-      clearTimeout(this.controlsTimeout);
-    } 
-    else {
-      this.controlsTimeout = setTimeout(() => {
-        controls.style.animation = 'slideDown 0.5s ease forwards';
-      }, 3000);
-    }
+    this.setDimensions();
   }
 
   private setDimensions(): void {
     const slides = <HTMLElement[]>Array
       .from(this.slidesStrip.nativeElement.children);
 
+    this.width  = this.width  < 200 || !this.width ? 200 : this.width;
+    this.height = this.height < 200 || !this.height ? 200 : this.height;
+
     this.offsetContainer.nativeElement.style.maxWidth = `${this.width}px`;
     this.offsetContainer.nativeElement.style.height = `${this.height}px`;
     
-    if(['cards', 'fade'].indexOf(this.transition) !== -1) {
+    if(['cards', 'fade', 'blackout'].indexOf(this.transition) !== -1) {
       slides.map(slide => slide.style.maxWidth = `${this.width}px`);
     } else {
       slides.map(slide => slide.style.width = `${this.width}px`);
     }
+  }
+
+  get slidesCount() {
+    return `${this.currentSlide + 1}/${this.slides.length}`;
   }
 
   private playSlideshow(): void {
@@ -130,7 +90,7 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
     let timeout: number = typeof this.autoplay !== 'boolean' ? 
       this.autoplay.timeout : 3000;
 
-    this.switchSlide(this.autoplayIndex);
+    this.slideAnimation(this.autoplayIndex);
 
     setTimeout(() => {
       this.autoplayIndex++;
@@ -138,13 +98,19 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
     }, timeout);
   }
 
-  switchSlide(index: number): void {
+  private slideAnimation(index: number): void {
+    if (this.currentSlide == index) { return; }
+
     const slides = <HTMLElement[]>Array
       .from(this.slidesStrip.nativeElement.children);
 
     switch (this.transition) {
       case 'fade':
         this.fadeTransition(index, slides);
+        break;
+
+      case 'blackout':
+        this.blackoutTransition(index, slides);
         break;
 
       case 'cards':
@@ -156,13 +122,11 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
         break;
     }
     this.currentSlide = index;
-    this.autoplayIndex = this.currentSlide;
-
-    setTimeout(() => {
-      if (this.controlsType == 4) {
-        this.thumbnails[index].scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+    
+    if (this.autoplay) {
+      this.autoplayIndex = this.currentSlide;
+      this.controlsComponent.onAutoplay(index);
+    }
   }
 
   private stripTransition(index: number, slides: HTMLElement[]) {
@@ -177,19 +141,30 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
 
   private fadeTransition(index: number, slides: HTMLElement[]) {
     slides.map(slide => {
-      if (slide !== slides[index]) {
-        slide.style.visibility = 'hidden'
-        slide.classList.remove('active-slide');
-      }
+      slide.style.zIndex = '-1';
+      slide.classList.remove('active-slide');
     });
-    slides[index].classList.add('active-slide');
+    
+    slides[this.currentSlide].style.zIndex = '1';
+    slides[index].style.zIndex = '0';
+    slides[this.currentSlide].classList.add('active-slide');
+  }
+
+  private blackoutTransition(index: number, slides: HTMLElement[]) {
+    slides.map(slide => {
+      slide.style.visibility = 'hidden';
+      slide.classList.remove('visible-slide');
+    });
+
+    slides[index].style.visibility = 'visible';
+    slides[index].classList.add('visible-slide');
   }
 
   private cardsTransition(index: number, slides: HTMLElement[]) {
     const path = index > this.currentSlide ? 'next' : 'before';
 
     slides.map(slide => {
-      slide.style.zIndex = '-1'
+      slide.style.zIndex = '-1';
       slide.classList.remove('active-next');
       slide.classList.remove('active-before');
     });
@@ -199,4 +174,7 @@ export class SlideshowComponent implements OnInit, AfterViewInit, OnChanges {
     slides[index].classList.add(`active-${path}`);
   }
 
+  controlsVisibility(visible: boolean): void {
+    this.controlsComponent.controlsVisibility(visible);
+  }
 }

@@ -1,0 +1,52 @@
+<div 
+  *ngIf="controlsType !== 4"
+  #controls
+  (mouseover)="controlsVisibility(true)"
+  (mouseleave)="controlsVisibility(false)"
+  class="controls"
+  [class]="controlsStyles"
+  [class.controls-autohide]="autohide">
+  <button 
+    *ngFor="let slide of slides; index as index"
+    (click)="onPreviewClick(index)"
+    [class.active-btn]="index == activePreview">
+  </button>    
+</div>
+
+<div 
+  *ngIf="controlsType == 4"
+  class="nav-btns-wrapper">
+  <div *ngIf="showNavButtons" class="nav-btns">
+    <button 
+      #navButton
+      disabled
+      (click)="onNavButtonClick('before')">
+      <i class="material-icons">keyboard_arrow_left</i>
+    </button>
+
+    <button 
+      #navButton
+      (click)="onNavButtonClick('next')">
+      <i class="material-icons">keyboard_arrow_right</i>
+    </button>
+  </div>
+
+  <div 
+    #controls
+    [class]="controlsStyles">
+    <div 
+      #previewStrip
+      (keydown)="onPreviewKeydown($event)"
+      class="preview-strip">
+      <button
+        #preview
+        *ngFor="let slide of slides; index as index"
+        (click)="onPreviewClick(index)"
+        [class.focused]="index == activePreview">
+        <img [src]="slide" draggable="false">
+      </button>    
+
+      <span #indicator id="indicator"></span>
+    </div>
+  </div>
+</div>
