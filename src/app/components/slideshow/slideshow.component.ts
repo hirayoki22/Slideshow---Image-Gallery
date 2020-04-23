@@ -11,18 +11,19 @@ interface Playback {
 @Component({
   selector: 'slideshow',
   templateUrl: './slideshow.component.html',
-  styleUrls: ['./slideshow.component.css']
+  styleUrls: ['./slideshow.component.css'],
+  providers: [ SlideshowService ]
 })
 export class SlideshowComponent implements OnInit, AfterViewInit {
-  @Input('slides') slides: string[] = [];
-  @Input('width') width: number;
-  @Input('height') height: number;
-  @Input('transition') transition: string;
+  @Input() slides: string[] = [];
+  @Input() width: number;
+  @Input() height: number;
+  @Input() transition: string;
   @Input('counter') showCounter: boolean = true;
   @Input('controls') showControls: boolean = true;
   @Input('controls-type') controlsType: number = 1;
   @Input('controls-autohide') autohide: boolean = false;
-  @Input('autoplay') autoplay: boolean | Playback;
+  @Input() autoplay: boolean | Playback;
   @ViewChild('offsetContainer') offsetContainer: ElementRef;
   @ViewChild('slidesStrip') slidesStrip: ElementRef;
   @ViewChild(ControlsComponent) controlsComponent: ControlsComponent;
@@ -31,7 +32,6 @@ export class SlideshowComponent implements OnInit, AfterViewInit {
 
 
   constructor(private slideshowService: SlideshowService) { }
-
 
   ngOnInit(): void {
     this.slideshowService.loadSlides(this.slides);
