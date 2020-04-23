@@ -1,35 +1,33 @@
 <slideshow 
-[slides]="slides | async"
-[width]="900"
-[height]="550"
-[controls]=""
-[transition]=""
-[controls-type]="4"
-[controls-autohide]=""
-[autoplay]=""
-></slideshow>
+  [slides]="slides | async"
+  [width]="900"
+  [height]="550"
+  [controls]=""
+  [transition]="'fade'"
+  [controls-type]="4"
+  [controls-autohide]=""
+  [autoplay]=""></slideshow>
 
 
-<!-- Accepted Inputs -->
+<!-- ***** Accepted Input Parameters ***** -->
 
 <!-- 
   [slides] (string[]) accepts an array of images
 
-  [width] (number) sets the container width. Default value is 400(px)
+  [width] (number) sets the container width. Default value is 400px
 
-  [height] (number) sets the container height. Default value is 180(px)
+  [height] (number) sets the container height. Default value is 180px
 
-  [transition] (string) indicates de transition type {'strip', 'fade', 'cards'}. Default is 'strip'
+  [transition] (string) indicates de transition type: 'strip', 'fade', 'cards', 'blackout'. Default is 'strip'
 
   [counter] (boolean) shows count and current slide position. Default is true
 
   [controls] (boolean) shows navigation controls. Default is true
 
-  [controls-type] (number) set the controls style: round, slim, square. Default is 0
+  [controls-type] (number) set the controls style: 1 (round), 2 (slim), 3 (square), 4 (thumbnails). Default is 1
 
   [controls-autohide] (boolean) enables controls autohide. Defualt is false;
-    Will not work in controls-type is set to 4
+  Will not work in controls-type is set to 4
 
-  [autoplay] (boolean | { timeout: number }) autoplays the slideshow if set to true. Can use an object to spacify the slide change timeout
-
+  [autoplay] (boolean | { timeout: number }) autoplays the slideshow if set to true. Spacify the timeout
 -->
