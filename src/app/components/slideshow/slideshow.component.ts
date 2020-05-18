@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Input, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Input, ViewChild, ElementRef } from '@angular/core';
 
 import { SlideshowService } from './services/slideshow.service';
 import { ControlsComponent } from './controls/controls.component';
