@@ -10,12 +10,12 @@ import { SlideService } from './services/slide.service';
   providers: [ SlideService ]
 })
 export class DashboardComponent implements OnInit {
-  slides: Observable<string[]>;
+  slides$: Observable<string[]>;
 
   constructor(private slideService: SlideService) { }
 
   ngOnInit(): void {
-    this.slides = this.slideService.getSlides();
+    this.slides$ = this.slideService.getSlides();
   }
 
 }

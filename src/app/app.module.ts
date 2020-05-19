@@ -12,7 +12,7 @@ import { ControlsComponent } from './components/slideshow/controls/controls.comp
     AppComponent,
     SlideshowComponent,
     DashboardComponent,
-    ControlsComponent
+    ControlsComponent,
   ],
   imports: [
     BrowserModule

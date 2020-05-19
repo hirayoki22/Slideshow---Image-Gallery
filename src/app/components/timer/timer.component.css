@@ -1,0 +1,16 @@
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75px;
+  height: 75px;
+  padding: 1rem;
+  color: #555;
+  font-size: 0.95rem;
+  border-radius: 100px;
+  background-color: #dbe3eb;
+}
+
+.running-out {
+  color: #ff4646 !important;
+}

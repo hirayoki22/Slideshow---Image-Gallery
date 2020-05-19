@@ -1,0 +1,28 @@
+<div 
+  class="question-container">
+  <div class="top-content">
+    <h3>{{ activeQuestion.title }}</h3>
+
+    <span>Points: <strong>{{ activeQuestion.points }}</strong></span>
+  </div>
+
+  <div class="content">
+    <img *ngIf="activeQuestion.image" [src]="activeQuestion.image">
+
+    <button 
+      *ngFor="let answer of activeQuestion.answers; index as index"
+      (click)="onAnswerClick(activeQuestion, answer)"
+      class="answer"
+      [class.selected]="selected == index">
+      {{ index + 1 }}. {{ answer }}
+    </button>
+  </div>
+  
+  <div class="bottom-content">
+    <timer 
+      [time]="activeQuestion.timeLimit"
+      (timeout)="onTimeout(activeQuestion)"></timer>
+
+    <button class="proceed-btn">Next</button>
+  </div>
+</div>
