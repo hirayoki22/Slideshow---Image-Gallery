@@ -43,7 +43,7 @@
         *ngFor="let slide of slides; index as index"
         (click)="onPreviewClick(index)"
         [class.focused]="index == activePreview">
-        <img [src]="slide" draggable="false">
+        <img image-loader [src]="slide" draggable="false">
       </button>    
 
       <span #indicator id="indicator"></span>

@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appImageLoader]'
+  selector: '[image-loader]'
 })
 export class ImageLoaderDirective {
 
