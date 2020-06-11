@@ -185,17 +185,38 @@ button {
   margin-right: 0.3rem;
 }
 
+@keyframes focus {
+  from {
+    filter: brightness(100%);
+    transform: scale(1, 1);
+  }
+  to {
+    filter: brightness(50%);
+    transform: scale(1.4, 1.4);
+  }
+}
+
+@keyframes unfocus {
+  from {
+    filter: brightness(50%);
+    transform: scale(1.4, 1.4);
+  }
+  to {
+    filter: brightness(100%);
+    transform: scale(1, 1);
+  }
+}
+
 .preview-controls button img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 50% 50%;
-  transition: filter 0.3s ease, transform 0.3s ease-in-out;
+  animation: unfocus .3s ease forwards;
 }
 
 .preview-controls .focused img {
-  filter: brightness(50%);
-  transform: scale(1.4, 1.4);
+  animation: focus .3s ease forwards;
 }
 
 .preview-controls button:hover:not(.active-btn) {
